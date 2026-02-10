@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0A%0D%0AMessage:%0D%0A${message}`;
 
             // Open Mail Client
-            window.location.href = `mailto:sv7879075753@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+            window.location.href = `mailto:vsonu4428@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
 
             // Show feedback using SweetAlert2
             // Use a short timeout to ensure the mailto link has processed
