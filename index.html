@@ -239,18 +239,22 @@
                             </div>
                         </div>
                     </div>
-                    <form class="contact-form">
+                    <form class="contact-form" action="https://formsubmit.co/vsonu4428@gmail.com" method="POST">
+                        <!-- Redirection and honeypot -->
+                        <input type="hidden" name="_subject" value="New Inquiry from Website">
+                        <input type="hidden" name="_captcha" value="false">
+
                         <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
+                            <input type="text" name="name" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
+                            <input type="email" name="email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="tel" placeholder="Your Phone" required>
+                            <input type="tel" name="phone" placeholder="Your Phone" required>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Message" rows="5" required></textarea>
+                            <textarea name="message" placeholder="Message" rows="5" required></textarea>
                         </div>
                         <button type="submit" class="btn-primary">Send Message</button>
                     </form>

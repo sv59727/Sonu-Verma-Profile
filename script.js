@@ -69,34 +69,57 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form Submission Handler
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Get form values
-            const inputs = contactForm.querySelectorAll('input, textarea');
-            const name = inputs[0].value;
-            const email = inputs[1].value;
-            const phone = inputs[2].value;
-            const message = inputs[3].value;
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.innerText = 'Sending...';
+            submitBtn.disabled = true;
 
-            // Construct Email Body
-            const subject = `New Inquiry from Website - ${name}`;
-            const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+            const formData = new FormData(this);
 
-            // Open Mail Client
-            window.location.href = `mailto:vsonu4428@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+            // Using FormSubmit.co AJAX endpoint
+            fetch("https://formsubmit.co/ajax/vsonu4428@gmail.com", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success === "false" || (data.message && data.message.includes("fail"))) {
+                        throw new Error(data.message || 'Submission failed');
+                    }
 
-            // Show feedback using SweetAlert2
-            // Use a short timeout to ensure the mailto link has processed
-            setTimeout(() => {
-                Swal.fire({
-                    title: 'Redirecting...',
-                    text: 'Opening your email client to send the message.',
-                    icon: 'success',
-                    confirmButtonColor: '#1a3c34', // Primary color
-                    confirmButtonText: 'OK'
+                    Swal.fire({
+                        title: 'Message Sent!',
+                        text: 'Thank you for connecting with Dream Progressive Ventures. We will get back to you shortly.',
+                        icon: 'success',
+                        confirmButtonColor: '#1a3c34',
+                        confirmButtonText: 'Great!'
+                    });
+                    contactForm.reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    let errorMsg = 'Something went wrong. Please try again later.';
+
+                    // Helpful message for local testing
+                    if (window.location.protocol === 'file:') {
+                        errorMsg = "It looks like you're running this file locally. Form submission services usually require a live web server (http/https) to specific referrers. Please upload your site to test the email feature fully.";
+                    }
+
+                    Swal.fire({
+                        title: 'Submission Failed',
+                        text: errorMsg,
+                        icon: 'error',
+                        confirmButtonColor: '#1a3c34'
+                    });
+                })
+                .finally(() => {
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.disabled = false;
                 });
-            }, 500);
         });
     }
 
